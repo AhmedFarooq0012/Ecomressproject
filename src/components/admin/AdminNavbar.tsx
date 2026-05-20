@@ -1,0 +1,82 @@
+"use client";
+
+interface AdminNavbarProps {
+    activeTab: "products" | "orders";
+    setActiveTab: (tab: "products" | "orders") => void;
+    onLogout: () => void;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
+}
+
+export default function AdminNavbar({
+    activeTab,
+    setActiveTab,
+    onLogout,
+    searchQuery,
+    setSearchQuery
+}: AdminNavbarProps) {
+    return (
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+
+                {/* Left Side: Brand Identity & Nav Controls */}
+                <div className="flex items-center gap-6 md:gap-8 shrink-0">
+                    <span
+                        onClick={() => { setActiveTab("products"); setSearchQuery(""); }}
+                        className="text-lg md:text-xl font-black text-indigo-600 tracking-wider uppercase cursor-pointer"
+                    >
+                        StoreUI Admin
+                    </span>
+
+                    <nav className="flex items-center gap-1 md:gap-2 text-xs md:text-sm font-semibold">
+                        <button
+                            onClick={() => setActiveTab("products")}
+                            className={`px-2.5 py-1.5 md:px-3 md:py-2 rounded-md transition ${activeTab === "products" ? "bg-indigo-50 text-indigo-700" : "text-gray-600 hover:text-gray-900"}`}
+                        >
+                            📦 Inventory
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("orders")}
+                            className={`px-2.5 py-1.5 md:px-3 md:py-2 rounded-md transition ${activeTab === "orders" ? "bg-indigo-50 text-indigo-700" : "text-gray-600 hover:text-gray-900"}`}
+                        >
+                            📑 Orders
+                        </button>
+                    </nav>
+                </div>
+
+                {/* Center Section: Admin Dynamic Search Bar (Sirf products tab par dikhega) */}
+                {activeTab === "products" && (
+                    <div className="flex-1 max-w-md mx-4 relative hidden sm:block">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 text-sm">
+                            🔍
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search inventory by title, category, or spec..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-xs font-medium text-gray-900 outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                        />
+                        {searchQuery && (
+                            <button
+                                onClick={() => setSearchQuery("")}
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 text-xs font-bold"
+                            >
+                                &times;
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                {/* Right Side: Log Out Trigger Operation */}
+                <button
+                    onClick={onLogout}
+                    className="border border-rose-200 text-rose-600 hover:bg-rose-50 transition px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide shrink-0"
+                >
+                    Log Out
+                </button>
+
+            </div>
+        </header>
+    );
+}
